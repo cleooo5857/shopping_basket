@@ -1,24 +1,27 @@
 import { useState } from 'react'
 
 
-function BasketList({item ,onProductPlus}){
-
+function BasketList({item ,onProductPlus , onProductMius}){
 
     
-    const onChangeQuantity = ()=> {
+    const onChangePlus = ()=> {
         //map 으로 중복제거한 각 배열의 키값을 전달
         onProductPlus(item.id)
         
     }
+    const onChangetMius = () => {
+        onProductMius(item.id)
+    }
+
 
     return (
     
     <div>
            <p>
                 상품이름 : {item.name} &nbsp;
-                <button onClick={ onChangeQuantity}>+</button> &nbsp;
+                <button onClick={ onChangePlus}>+</button> &nbsp;
                 {item.count} &nbsp;
-                <button>-</button> &nbsp;
+                <button onClick={onChangetMius}>-</button> &nbsp;
                 상품가격 : {item.price} &nbsp;
            </p>
 

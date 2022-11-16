@@ -5,32 +5,34 @@ function Basket({cart_item}) {
 
     const [BasketItem, setBasketItem] = useState(0);
     const [newItem, setnewItem] = useState([])
-    const arr = [];
     
     const onAddCartItem = (id) => {
 
         const copycart_item = [...cart_item]
-        const Listfind = copycart_item.find((list) => list.id == id)
-
+        const Listfind = copycart_item.find((list) => list.id == id )
         setnewItem([...newItem , Listfind])
-
     }
 
-    const onProductPlus = (id,price) => {
-        
-        const plusCount = newItem.map((list,index)=> list.id === id  
+
+    const onProductPlus = (id) => {
+        const plusCount = newItem.map((list)=> list.id === id  
         ?   
-            {
-                ...list,
-                count : list.count + 1,
-                price : list.price + newItem[index].price
-            }
+            { ...list, count : list.count+ 1, price : list.price }
             : list
         )
 
         setnewItem(plusCount)
     }
     
+    const onProductMius = (id) => {
+        const MiunCount = newItem.map((list)=> list.id === id  
+        ?   
+            { ...list, count : list.count - 1, price : list.price }
+            : list
+        )
+
+        setnewItem(MiunCount)
+    }
     
 
     return (
@@ -51,12 +53,26 @@ function Basket({cart_item}) {
                 <span>장바구니 목록</span> :
                 <div>
                     {
-                        newItem.map((item,index) => (
-                        newItem.indexOf(item) === index ?  
-                        <BasketList item={item} onProductPlus={onProductPlus}/>
-                        : false
-                        ))
-                    }
+                        // newItem.map((item,index) => (
+                        //     //item 전체요소 index = 클릭한 index요소 
+                        // newItem.indexOf(item) === index ?
+                        // <BasketList item={item} onProductPlus={onProductPlus}/>
+                        // : false
+                        // ))
+                     
+                    } 
+
+                {newItem
+                .filter(
+                  (arr, index, callback) =>
+                    index ===
+                    callback.findIndex((loc) => loc.name === arr.name)
+                )
+                .map((item) => (
+                    <div>
+                        <BasketList item={item} onProductPlus={onProductPlus} onProductMius={onProductMius}/>
+                    </div>
+                ))} 
                 </div>
             }
             <p>총 가격</p>
