@@ -5,45 +5,61 @@ function Basket({cart_item}) {
 
     const [BasketItem, setBasketItem] = useState(0);
     const [newItem, setnewItem] = useState([])
-
+    const arr = [];
     
     const onAddCartItem = (id) => {
 
         const copycart_item = [...cart_item]
         const Listfind = copycart_item.find((list) => list.id == id)
-        setnewItem([...newItem, Listfind])
+
+        setnewItem([...newItem , Listfind])
+
     }
+
+    const onProductPlus = (id,price) => {
+        
+        const plusCount = newItem.map((list,index)=> list.id === id  
+        ?   
+            {
+                ...list,
+                count : list.count + 1,
+                price : list.price + newItem[index].price
+            }
+            : list
+        )
+
+        setnewItem(plusCount)
+    }
+    
+    
 
     return (
         <>
-            <div>{BasketItem}</div>
+            <div>{newItem.length}</div>
 
             {
-                cart_item.map((item) =>(
-                    <div key={item.id} >
-                        {item.id} 상품명 : {item.name}<br/> 상품 가격 : {item.price} 
-
-                        <button onClick={()=>onAddCartItem(item.id)}>장바구니 추가 </button>
+                cart_item.map((list) =>(
+                    <div key={list.id} >
+                        {list.id} 상품명 : {list.name}  상품 가격 : {list.price} 
+                        <button onClick={()=>onAddCartItem(list.id)}>장바구니 추가 </button>
                     </div>
-
                 ))
             }
+
             {
                 newItem.length === 0 ?
-                <span>장바구니 목록</span> :  
-                // newItem.map((item,index) => newItem.indexOf )
+                <span>장바구니 목록</span> :
                 <div>
                     {
                         newItem.map((item,index) => (
                         newItem.indexOf(item) === index ?  
-                        "상품명 :" + item.name + "가격 : " + item.price +
-                        <BasketList />
-                        : null
+                        <BasketList item={item} onProductPlus={onProductPlus}/>
+                        : false
                         ))
                     }
-                    
                 </div>
             }
+            <p>총 가격</p>
         </>
     )
 }
