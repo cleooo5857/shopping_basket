@@ -27,23 +27,15 @@ function BasketList({item ,onProductPlus , onProductMius ,onlistDeleteBtn}){
     return (
     
     <div>
-           <p>
+            <p>
                 상품이름 : {item.name} &nbsp;
                 <button onClick={ onChangePlus}>+</button> &nbsp;
                 {item.count} &nbsp;
                 <button onClick={onChangetMius} disabled={btndefault} >-</button> &nbsp;
                 상품가격 : {item.price} &nbsp;
                 <button onClick={onDeletebtn}>상품 삭제</button>
-           </p>
+            </p>
 
-           
-        {/* {
-            newItem && newItem.map((item,index) => (
-            newItem.indexOf(item) === index ?  
-            "상품명 :" + item.name + "가격 : " + item.price
-            : false
-            ))
-        }   */}
     </div>
     )
 }
