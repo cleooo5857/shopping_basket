@@ -16,25 +16,32 @@ function Basket({cart_item}) {
         arr.push(Listfind)
         
         setnewItem([...newItem , Listfind])
-
+        
     }
-    console.log(arr) //  = [] 빈배열 출력됨
-
 
     const onProductPlus = (id) => {
-        const plusCount = newItem.map((list)=> list.id === id  
+        const PlusCount = newItem.map((list,index,arr) => list.id === id  
         ?   
-            { ...list, count : list.count+ 1, price : list.price }
+            { ...list,
+                name  : list.name,
+                count : list.count + 1, 
+                price : list.price + cart_item[id-1].price
+                
+            }
             : list
         )
 
-        setnewItem(plusCount)
+        setnewItem(PlusCount)
     }
     
     const onProductMius = (id) => {
         const MiunCount = newItem.map((list)=> list.id === id  
         ?   
-            { ...list, count : list.count - 1, price : list.price }
+            { ...list,
+                name  : list.name,
+                count : list.count - 1, 
+                price : list.price - cart_item[id-1].price
+            }
             : list
         )
 
@@ -42,13 +49,21 @@ function Basket({cart_item}) {
     }
     
 
+    const onlistDeleteBtn = (id) =>{
+        const filter = newItem.filter((list) => list.id !== id)
+        setnewItem(filter)
+    }
+
+    console.log(newItem);
+
     return (
         <>
-            <div>{newItem.length}</div>
 
+            <div>장바구니 상품 목록 :  {newItem.length}</div>
             {
                 cart_item.map((list) =>(
                     <div key={list.id} >
+
                         {list.id} 상품명 : {list.name}  상품 가격 : {list.price} 
                         <button onClick={()=>onAddCartItem(list.id)}>장바구니 추가 </button>
                     </div>
@@ -66,20 +81,19 @@ function Basket({cart_item}) {
                         // <BasketList item={item} onProductPlus={onProductPlus}/>
                         // : false
                         // ))
-                     
                     } 
 
-                {newItem
-                .filter(
-                  (arr, index, callback) =>
-                    index ===
-                    callback.findIndex((loc) => loc.name === arr.name)
-                )
-                .map((item) => (
-                    <div>
-                        <BasketList item={item} onProductPlus={onProductPlus} onProductMius={onProductMius}/>
-                    </div>
-                ))} 
+                {
+                newItem
+                    .filter(
+                    (arr, index, callback) =>
+                        index === callback.findIndex((loc) => loc.name === arr.name)
+                    ).map((item) => (
+                        
+                        <div>
+                            <BasketList item={item} onProductPlus={onProductPlus} onProductMius={onProductMius} onlistDeleteBtn={onlistDeleteBtn}/>
+                        </div>
+                    ))} 
                 </div>
             }
             <p>총 가격</p>
