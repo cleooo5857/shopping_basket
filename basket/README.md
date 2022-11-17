@@ -1,5 +1,4 @@
 <<<<<<< HEAD
-<<<<<<< HEAD
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
@@ -78,6 +77,3 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/t
 # Reducer,context 이용한 전역관리
 # 기능 : 수정 , 삭제 추가
 >>>>>>> d58a8c963086f69a0deeb280589e870733508e92
-=======
-# shopping_basket
->>>>>>> f13989228047bc9987bcfd287dcb962431f06ac0
