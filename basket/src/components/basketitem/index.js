@@ -1,43 +1,59 @@
-import { useState, useEffect } from 'react'
+import { useState, useCallback, useRef } from 'react'
 import BasketList from '../pages/basketlist'
 
 function Basket({cart_item}) {
 
     const [BasketItem, setBasketItem] = useState(0);
     const [newItem, setnewItem] = useState([])
+    const arr = useRef([]);
     
-    const onAddCartItem = (id) => {
-
+    const onAddCartItem =(id) => {
+        
         const copycart_item = [...cart_item]
         const Listfind = copycart_item.find((list) => list.id == id )
-        setnewItem([...newItem , Listfind])
+        arr.current.push(Listfind) 
+
+        const filter = arr.current.filter((list, index, callback) =>
+                index === callback.findIndex((loc) => loc.id === list.id)
+        )
+
+        setnewItem(filter)
+        
     }
 
-
+    console.log(newItem.price);
+    
+    // 내가 클릭한 플러스버튼이 id냐 
     const onProductPlus = (id) => {
-        const plusCount = newItem.map((list)=> list.id === id  
+        setnewItem(preveState => preveState.map((list)=> list.id === id  
         ?   
-            { ...list, count : list.count+ 1, price : list.price }
-            : list
-        )
-
-        setnewItem(plusCount)
-    }
+        { ...list,
+            name  : list.name,
+            count : list.count + 1, 
+            price : list.price + cart_item[id-1].price
+        }
+        : list
+        ))
+        
     
+    }
+        
     const onProductMius = (id) => {
-        const MiunCount = newItem.map((list)=> list.id === id  
-        ?   
-            { ...list, count : list.count - 1, price : list.price }
+        
+        setnewItem(preveState => preveState.map((list)=> list.id === id  
+            ?   
+            { ...list,
+                name  : list.name,
+                count : list.count - 1, 
+                price : list.price - cart_item[id-1].price
+            }
             : list
-        )
-
-        setnewItem(MiunCount)
+            ))
     }
-    
-
-    return (
-        <>
-            <div>{newItem.length}</div>
+        
+        return (
+            <>
+            <div>장바구니 상품 목록 :  {newItem.length}</div>
 
             {
                 cart_item.map((list) =>(
@@ -52,29 +68,18 @@ function Basket({cart_item}) {
                 newItem.length === 0 ?
                 <span>장바구니 목록</span> :
                 <div>
-                    {
-                        // newItem.map((item,index) => (
-                        //     //item 전체요소 index = 클릭한 index요소 
-                        // newItem.indexOf(item) === index ?
-                        // <BasketList item={item} onProductPlus={onProductPlus}/>
-                        // : false
-                        // ))
-                     
-                    } 
-
-                {newItem
-                .filter(
-                  (arr, index, callback) =>
-                    index ===
-                    callback.findIndex((loc) => loc.name === arr.name)
-                )
-                .map((item) => (
-                    <div>
+                {
+                    newItem.map((item) => 
                         <BasketList item={item} onProductPlus={onProductPlus} onProductMius={onProductMius}/>
-                    </div>
-                ))} 
+                    )
+                }
+                
                 </div>
             }
+
+
+
+
             <p>총 가격</p>
         </>
     )
