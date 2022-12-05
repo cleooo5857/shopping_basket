@@ -7,37 +7,28 @@ function Basket({cart_item}) {
     const [newItem, setnewItem] = useState([])
     const arr = useRef([]);
     
-    const onAddCartItem =(id) => {
+    const onAddCartItem = (id) => {
         
-        const copycart_item = [...cart_item]
-        const Listfind = copycart_item.find((list) => list.id == id )
-        arr.current.push(Listfind) 
-
-        const filter = arr.current.filter((list, index, callback) =>
-                index === callback.findIndex((loc) => loc.id === list.id)
-        )
-
-        setnewItem(filter)
+        // 클릭한 상품들
+        const Listfind = cart_item.find((list) => list.id == id )
+        arr.current.push({...Listfind});
+        
+        const result = arr.current.filter((v, i) => 
+        arr.current.findIndex(x => x.id === v.id) === i);
+        setnewItem(result)
         
     }
 
-    console.log(newItem.price);
-    
     // 내가 클릭한 플러스버튼이 id냐 
     const onProductPlus = (id) => {
-        setnewItem(preveState => preveState.map((list)=> list.id === id  
-        ?   
-        { ...list,
-            name  : list.name,
-            count : list.count + 1, 
-            price : list.price + cart_item[id-1].price
-        }
-        : list
-        ))
         
-    
+        const newTodo = [...newItem]
+        const find = newTodo.find((list) => list.id === id)
+        find.count = find.count + 1
+        find.price = find.price + cart_item[id-1].price
+        setnewItem(newTodo)
     }
-        
+console.log(newItem);
     const onProductMius = (id) => {
         
         setnewItem(preveState => preveState.map((list)=> list.id === id  
@@ -69,16 +60,12 @@ function Basket({cart_item}) {
                 <span>장바구니 목록</span> :
                 <div>
                 {
-                    newItem.map((item) => 
-                        <BasketList item={item} onProductPlus={onProductPlus} onProductMius={onProductMius}/>
+                    newItem.map((item) =>
+                        <BasketList key={item.id} item={item} onProductPlus={onProductPlus} onProductMius={onProductMius}/>
                     )
                 }
-                
                 </div>
             }
-
-
-
 
             <p>총 가격</p>
         </>

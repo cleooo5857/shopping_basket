@@ -45,7 +45,7 @@ const cart_item = [
   },
 ];
 
-
+console.log(cart_item);
 
 function App() {
   return (
